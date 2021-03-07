@@ -1,0 +1,20 @@
+/* You can add global styles to this file, and also import other style files */
+
+.LoginBox{
+    display : flex;
+    flex-direction: column;
+    align-items: center;
+   
+    justify-content: space-evenly;
+    width:max-content;
+    height:max-content;
+    position: absolute;
+    top: 25%;
+    left: 40%;
+    border: 5px solid grey;
+    border-radius: 10px;
+    border-style: ridge;
+    
+    text-transform: capitalize;
+
+  }

@@ -1,0 +1,24 @@
+/* label {
+    order: 1;
+    width: 10em;
+    padding-right: 0.5em;
+  }
+  
+  input, textarea, select {
+    order: 2;
+    flex: 1 1 auto;
+  } */
+
+  
+  .LoginBox div{
+    padding: 20px;
+  
+  }
+
+  label{
+    font-weight: bold;
+  }
+
+  button:hover{
+    cursor: pointer;
+  }
