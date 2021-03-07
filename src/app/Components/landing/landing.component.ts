@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import {  NbAuthResult, NbAuthService} from '@nebular/auth';
 
 import { takeWhile } from 'rxjs/operators';
-import { UserService } from 'src/app/Service/user.service';
+import { UserService } from '../../Service/user.service';
 
 @Component({
   selector: 'app-landing',
