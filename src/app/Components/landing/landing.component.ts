@@ -1,5 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import {  NbAuthResult, NbAuthService} from '@nebular/auth';
 
@@ -15,7 +16,7 @@ export class LandingComponent implements OnInit {
   alive = true;
   UserInformation : Array<string> =[];
   userInfoObject : any;
-  constructor(private authService: NbAuthService,private getUser : UserService) {
+  constructor(private authService: NbAuthService,private getUser : UserService,private router : Router) {
     this.userInfoFunction();
       
    }
@@ -36,6 +37,11 @@ export class LandingComponent implements OnInit {
     });
    }
 
+   Logout(){
+     this.authService.logout('google');
+     this.router.navigate(['/login']);
+   }
+   
   ngOnInit(): void {
     
   }
