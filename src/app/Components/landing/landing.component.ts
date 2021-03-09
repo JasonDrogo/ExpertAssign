@@ -2,9 +2,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import {  NbAuthResult, NbAuthService} from '@nebular/auth';
+import {NbAuthOAuth2Token, NbAuthResult, NbAuthService, NbLoginComponent, NbTokenService} from '@nebular/auth';
 
-import { takeWhile } from 'rxjs/operators';
 import { UserService } from '../../Service/user.service';
 
 @Component({
@@ -12,34 +11,65 @@ import { UserService } from '../../Service/user.service';
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.css']
 })
-export class LandingComponent implements OnInit {
-  alive = true;
+export class LandingComponent  implements OnInit {
   UserInformation : Array<string> =[];
-  userInfoObject : any;
+  userInfoObject : any ={};
+  show : boolean = false;
   constructor(private authService: NbAuthService,private getUser : UserService,private router : Router) {
-    this.userInfoFunction();
-      
-   }
+   this.authService.isAuthenticated().subscribe((authenticated : boolean)=>{
+if(!authenticated){
+  this.auethenticate();
+}
+else {
 
+ if( sessionStorage.getItem('token') != null){
 
+this.setUserInformation(JSON.parse(sessionStorage.getItem('token')));
 
+ }
+ else{
+  this.getUserInformation();
+ }
+}
 
-   userInfoFunction(){
-    this.authService.authenticate('google')
-    .pipe(takeWhile(() => this.alive))
-    .subscribe((authResult: NbAuthResult) => {
-      if (authResult.isSuccess() && authResult.getRedirect()) {
-        this.getUser.getUserInformation(authResult.getResponse()['access_token']).subscribe((userInfo:any)=>{
-         this.UserInformation = [...Object.keys(userInfo)];
-         this.userInfoObject = userInfo;
-        })
+   })
+  
+  }
+
+   auethenticate(){
+    
+    this.authService.authenticate('google').subscribe((authResult : NbAuthResult)=>{
+      if(authResult.isSuccess() && authResult.getRedirect()){
+        this.getUserInformation();
       }
-    });
+
+
+    })
+     
+  
    }
+   getUserInformation(){
+     
+     this.authService.getToken().subscribe((authToken : NbAuthOAuth2Token)=>{
+    this.getUser.getUserInformation(authToken.getPayload()['access_token']).subscribe((userInfo : Object) =>{
+      sessionStorage.setItem('token',JSON.stringify(userInfo));
+      this.setUserInformation(userInfo);
+    });
+   });
+  }
+
+
+  setUserInformation(token : any){
+    this.UserInformation = [...Object.keys(token)];
+    this.userInfoObject = token;
+    this.show = true;
+  }
+
 
    Logout(){
      this.authService.logout('google');
-     this.router.navigate(['/login']);
+    sessionStorage.clear();
+     this.router.navigate(['/']);
    }
    
   ngOnInit(): void {
