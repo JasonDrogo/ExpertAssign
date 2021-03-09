@@ -36,18 +36,13 @@ import {keys} from '../assets/env_var';
             responseType: NbOAuth2ResponseType.TOKEN ,
             scope: 'https://www.googleapis.com/auth/userinfo.profile',
             
-           redirectUri : 'http://localhost:4200/landing'
-          },
-          redirect : {
-            success : 'http://localhost:4200/landing',
-            failure :'http://localhost:4200'
-          }
-          
-         
-          
+           redirectUri : 'http://localhost:4200/landing',
+           
+          },       
         }),
         
       ],
+      
      
 
       

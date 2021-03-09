@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import {NbAuthOAuth2Token, NbAuthResult, NbAuthService, NbLoginComponent, NbTokenService} from '@nebular/auth';
+import {NbAuthOAuth2Token, NbAuthResult, NbAuthService, NbTokenService} from '@nebular/auth';
 
 import { UserService } from '../../Service/user.service';
 
@@ -15,7 +15,7 @@ export class LandingComponent  implements OnInit {
   UserInformation : Array<string> =[];
   userInfoObject : any ={};
   show : boolean = false;
-  constructor(private authService: NbAuthService,private getUser : UserService,private router : Router) {
+  constructor(private authService: NbAuthService,private getUser : UserService,private router : Router,private tokenService : NbTokenService) {
    this.authService.isAuthenticated().subscribe((authenticated : boolean)=>{
 if(!authenticated){
   this.auethenticate();
@@ -31,7 +31,6 @@ this.setUserInformation(JSON.parse(sessionStorage.getItem('token')));
   this.getUserInformation();
  }
 }
-
    })
   
   }
@@ -42,11 +41,7 @@ this.setUserInformation(JSON.parse(sessionStorage.getItem('token')));
       if(authResult.isSuccess() && authResult.getRedirect()){
         this.getUserInformation();
       }
-
-
-    })
-     
-  
+    })  
    }
    getUserInformation(){
      
@@ -68,6 +63,7 @@ this.setUserInformation(JSON.parse(sessionStorage.getItem('token')));
 
    Logout(){
      this.authService.logout('google');
+     this.tokenService.clear();
     sessionStorage.clear();
      this.router.navigate(['/']);
    }
